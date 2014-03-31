@@ -185,7 +185,7 @@ QMLは、別の要素へアンカー出来る要素によるレイアウト、�
 このボタンは、アクションを実行するための構成として使われなければ使い物になりません。
 次の節では、こうしたボタンをいくつか持つメニューを作ります。
 
-.. image: http://qt-project.org/doc/qt-5/images/qml-texteditor1_button.png
+.. image:: http://qt-project.org/doc/qt-5/images/qml-texteditor1_button.png
 
 
 メニューページの作成
@@ -195,10 +195,9 @@ QMLは、別の要素へアンカー出来る要素によるレイアウト、�
 
 メニューはリストの内容を表示し、各要素はアクションを実行する能力を持っています。QMLでは、様々な方法でメニューを作れます。まず、それぞれが異なるアクションをいずれ起こすボタンを含んでいるメニューを作ります。メニューのコードは ``FileMenu.qml`` にあります。
 
-::
-   In FileMenu.qml:
+FileMenu.qmlより::
 
-    Row {
+   Row {
         anchors.centerIn: parent
         spacing: parent.width / 6
 
@@ -226,13 +225,13 @@ QMLは、別の要素へアンカー出来る要素によるレイアウト、�
 .. note::
    ``exitButton`` のハンドラー ``onButtonClick`` に加え、 ``Button.qml`` にあるシグナル・ハンドラー ``onButtonClick`` も呼び出されます。
 
-.. image: http://qt-project.org/doc/qt-5/images/qml-texteditor1_filemenu.png
+.. image:: http://qt-project.org/doc/qt-5/images/qml-texteditor1_filemenu.png
 
 ``Row`` は ``Rectangle`` の中で定義され、ボタンの列のための矩形のコンテナーを作っている。この付加的な矩形はメニューの内側にボタンの列を作る間接的な方法を作っています。
 
 編集メニューの宣言はこの段階ではよく似ています。そのメニューは ``Copy`` 、 ``Paste`` 、 ``Select All`` ラベルをそれぞれ持つボタンを持ちます。
 
-.. image: http://qt-project.org/doc/qt-5/images/qml-texteditor1_editmenu.png
+.. image:: http://qt-project.org/doc/qt-5/images/qml-texteditor1_editmenu.png
 
 前もって作ったコンポーネントのインポートとカスタマイズについての知識を身に付けたので、これから、メニュー・バーを、コンポーネントを組み合わせて作りましょう。コンポーネントとは、複数のメニュー・ページのことで、そのメニュー・ページはそれぞれ、メニューの選択肢としての複数のボタンから成ります。まずはそれらを作ります。
 また、QMLでデータを組み立てる方法も見て行きます。
@@ -258,6 +257,7 @@ QMLは `データモデル`_ を表示する、異なる `データビュー`_ �
 .. _`ListView`: http://qt-project.org/doc/qt-5/qml-qtquick-listview.html
 
 ::
+
     ObjectModel {
         id: menuListModel
 
@@ -277,6 +277,7 @@ QMLは `データモデル`_ を表示する、異なる `データビュー`_ �
 `ListView`_ 型はデリゲートによりモデルを表示します。そのデリゲートはモデル項目を ``Row`` オブジェクトかグリッドの中に表示することが出来ます。私達の ``menuListModel`` には既に可視項目があるため、私達はデリゲートを宣言する必要がありません。
 
 ::
+
     ListView {
         id: menuListView
 
@@ -308,6 +309,7 @@ QMLは `データモデル`_ を表示する、異なる `データビュー`_ �
 矩形 ``labelList`` は値が、それがメニュー・バーの前に表示されると示す ``1`` である ``z`` を持っています。より ``z`` 値が高い項目は、 ``z`` 値がより低い項目よりも前に表示されます。デフォルトの ``z`` の値は ``0`` です。
 
 ::
+
     Rectangle {
         id: labelList
         ...
@@ -333,9 +335,9 @@ QMLは `データモデル`_ を表示する、異なる `データビュー`_ �
         }
     }
 
-私達が今作ったメニュー・バーは、フリックするか、または上部にあるメニュー名をクリックするかで、メニューにアクセスすることが出来ます。メニュー画面切り替えが直感的で、応答性がある感じがします。
+私達が今作ったメニュー・バーは、フリックするか、または上部にあるメニュー名をクリックするかで、メニューにアクセスすることが出来ます。直感的で、応答性がある感じのメニュー画面切り替えが出来ました。
 
-.. image: http://qt-project.org/doc/qt-5/images/qml-texteditor2_menubar.png
+.. image:: http://qt-project.org/doc/qt-5/images/qml-texteditor2_menubar.png
 
 
 テキストエディタの構築
@@ -347,9 +349,10 @@ TextAreaの宣言
 
 編集できるテキスト領域のないテキストエディタなんて、テキストエディタとは呼べません。QMLの `TextEdit`_ 型は、複数行の編集できるテキスト領域を可能にします。 ``TextEdit`` は、直接ユーザーにテキストを編集することを許さない `Text`_ 型とは異なります。
 
-
+.. _`TextEdit`: http://qt-project.org/doc/qt-5/qml-qtquick-textedit.html
 
 ::
+
     TextEdit {
         id: textEditor
         anchors.fill: parent
