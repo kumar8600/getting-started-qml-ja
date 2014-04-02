@@ -543,7 +543,133 @@ MenuBar.qml より::
 このグラデーションはメニューバーで奥行きに似せたものを見せるために使われます。最初の色は ``0.0`` から始まり、最後の色は ``1.0`` にあります。
 
 
-ここからどこへ行けばいいか
+これからすること
 --------------------------
 
-私達はとても単純なテキストエディタのユーザーインターフェイスを組み立てました。今後は、ユーザーインターフェイスは完璧である中で、普通のQtとC++を用いてアプリケーションロジックを実装することができます。QMLはプロトタイピングツールとして良く動き、アプリケーションロジックとUIデザインを引き離し分離させるのです。
+私達はとても単純なテキストエディタのユーザーインターフェイスを組み立てました。今後は、ユーザーインターフェイスが完成している中で、普通のQtとC++を用いてアプリケーションロジックを実装することができます。QMLはプロトタイピングツールとして良く動き、アプリケーションロジックとUIデザインを引き離し分離させるのです。
+
+.. image:: http://qt-project.org/doc/qt-5/images/qml-texteditor4_texteditor.png
+
+
+Qt C++を用いたQMLの拡張
+=======================
+
+テキストエディタのレイアウトが出来たので、今C++でテキストエディタの機能を実装することが出来ます。QMLとC++を共に使うことで、Qtで私達のアプリケーションロジックを作ることが可能となります。C++アプリケーションで `QtのQuickクラス`_ を用いることで、QMLコンテクストを作成でき、そして `QQuickView`_ を用いてQML型を表示する事ができます。代わりに、C++コードを拡張プラグインへとエクスポートして、新たな `identified module`_ としてQMLからアクセス出来るようにすることも出来ます。 `qmlscene`_ でQMLファイルを起動するとき、 `import paths`_ の一つからモジュールが見つかることさえ保証されていれば良いです。私達のアプリケーションでは、後者のアプローチを採ります。こうして、実行可能ファイルを実行するのではなく、QMLファイルを ``qmlscene`` から直接読み込むことが出来るのです。
+
+.. _`QtのQuickクラス`: http://qt-project.org/doc/qt-5/qtqml-cppintegration-topic.html
+.. _`QQuickView`: http://qt-project.org/doc/qt-5/qquickview.html
+.. _`identified module`: http://qt-project.org/doc/qt-5/qtqml-modules-identifiedmodules.html
+.. _`import paths`: http://qt-project.org/doc/qt-5/qtqml-syntax-imports.html#qml-import-path
+
+
+C++クラスをQMLへ公開
+----------------------
+
+QtとC++を用いて、読込と保存を実装します。C++クラスと関数は登録することで、QMLで使うことが出来ます。また、それらはQtプラグインとしてコンパイルされ、QMLモジュールとして公開される必要があります。
+
+私達ののアプリケーションでは、以下の項目を作る必要があります
+    1. ディレクトリに関係した操作をハンドルするクラス ``Directory``
+    2. ディレクトリの中のファイルを模した、 `QObject`_ であるクラス ``File``
+    3. QMLコンテクストにクラスを登録する、プラグインクラス
+    4. プラグインをコンパイルする、Qtプロジェクトファイル
+    5. 識別子を定義（URIをインポート）し、中身（この場合私達のプラグイン）をQMLモジュールから利用可能にする、 `Module definition qmldir ファイル`_ 
+
+.. _`QObject`: http://qt-project.org/doc/qt-5/qobject.html
+.. _`Module definition qmldir ファイル`: http://qt-project.org/doc/qt-5/qtqml-modules-qmldir.html
+
+.. note::
+   Qt 5.1から、 `Qt Quick Dialogs`_ モジュールが、ローカルファイルシステムからファイルを選択するのに使えるファイルダイアログの部品を提供しています。説明のために、このチュートリアルでは私達自身で記述します。
+
+
+Qtプラグインのビルド
+--------------------
+
+プラグインをビルドするには、Qtプロジェクトファイルに次のように設定する必要があります。まず必要なソース、ヘッダー、およびQtモジュールを私達のプロジェクトファイルに追加する必要があります。すべてのC++コードとプロジェクトファイルは ``filedialog`` ディレクトリにあります。
+
+filedialog.pro より::
+
+    TEMPLATE = lib
+    CONFIG += qt plugin
+    QT += qml
+
+    DESTDIR +=  ../imports/FileDialog
+    OBJECTS_DIR = tmp
+    MOC_DIR = tmp
+
+    TARGET = filedialogplugin
+
+    HEADERS += \
+            directory.h \
+            file.h \
+            dialogPlugin.h
+
+    SOURCES += \
+            directory.cpp \
+            file.cpp \
+            dialogPlugin.cpp
+
+プロジェクトと ``qml`` モジュールをリンクして、 ``plugin`` として構成するため、 ``lib`` テンプレートを用いていることが重要です。私達は、コンパイルしたプラグインを親ディレクトリの ``imports/FileDialog`` に置いています。
+
+
+クラスをQMLへ登録
+-----------------
+
+dialogPlugin.h より::
+
+    #include <QtQml/QQmlExtensionPlugin>
+
+    class DialogPlugin : public QQmlExtensionPlugin
+    {
+        Q_OBJECT
+        Q_PLUGIN_METADATA(IID "org.qt-project.QmlExtensionPlugin.FileDialog")
+
+    public:
+        // registerTypes は QQmlExtensionPlugin より継承
+        void registerTypes(const char *uri);
+    };
+
+マクロ `Q_PLUGIN_METADATA`_ を用いて、プラグインをエクスポートする必要があります。私達の ``dialogPlugin.h`` では、マクロ `Q_OBJECT`_ をクラスの最上部に持っています。その上、プロジェクトファイルに ``qmake`` を実行して、必要なメタ・オブジェクトコードを生成する必要があります。
+
+私達のプラグインクラス ``DialogPlugin`` は、 `QQmlExtensionPlugin`_ のサブクラスです。私達は継承した関数 `registerTypes()`_ を実装する必要があります。
+
+.. _`Q_PLUGIN_METADATA`: http://qt-project.org/doc/qt-5/plugins-howto.html
+.. _`Q_OBJECT`: http://qt-project.org/doc/qt-5/qobject.html#Q_OBJECT
+.. _`QQmlExtensionPlugin`: http://qt-project.org/doc/qt-5/qqmlextensionplugin.html
+
+DialogPlugin.cpp より::
+
+    #include "dialogPlugin.h"
+    #include "directory.h"
+    #include "file.h"
+    #include <QtQml>
+
+    void DialogPlugin::registerTypes(const char *uri)
+    {
+        // クラス Directory をQMLに "Directory" 型、バージョン 1.0 として登録
+        // @uri FileDialog
+        qmlRegisterType<Directory>(uri, 1, 0, "Directory");
+        qmlRegisterType<File>(uri, 1, 0, "File");
+    }
+
+関数 ``registerTypes()`` は私達のクラス ``File`` と ``Directory`` をQMLに登録します。この関数は、テンプレートのクラス名、メジャーバージョン番号、マイナーバージョン番号、およびクラス名を必要とします。コメント ``@uri <module identifier>`` により、Qt CreatorにこのモジュールをインポートしているQMLファイルを編集している時、登録した型を知らせる事ができます。
+
+
+C++クラスにQMLプロパティを作成
+------------------------------
+
+C++と `QtのMeta-Objectシステム`_ を使って、QML型とプロパティを作ることが出来ます。プロパティを実装するために、Qtにそれらのプロパティを認識させる、スロット・アンド・シグナルを使います。それらのプロパティはQMLで使うことが出来るようになります。
+
+テキストエディタのためには、ファイルの読込と保存が出来る必要があります。通常、それらの機能はファイルダイアログに含まれています。幸運なことに、 `QDir`_ 、 `QFile`_ 、および `QTextStream`_ が、ディレクトリーの読み込みや、ストリーム入力・出力に使えます。
+
+::
+
+    class Directory : public QObject {
+        Q_OBJECT
+
+        Q_PROPERTY (int filesCount READ filesCount CONSTANT)
+        Q_PROPERTY (QString filename READ filename WRITE setFilename NOTIFY filenameChanged)
+        Q_PROPERTY (QString fileContent READ fileContent WRITE setFileContent NOTIFY fileContentChanged)
+        Q_PROPERTY (QQmlListProperty<File> files READ files CONSTANT)
+        ...
+
+クラス ``Directory`` は `QtのMeta-Objectシステム`_ を、ファイルハンドリングを必要とするプロパティを登録するために使っている。
