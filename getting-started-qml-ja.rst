@@ -605,7 +605,7 @@ Qtプラグインのビルド
 
 filedialog.pro より:
 
-.. code:: qmake
+.. code::
 
     TEMPLATE = lib
     CONFIG += qt plugin
