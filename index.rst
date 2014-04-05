@@ -6,6 +6,22 @@
 QMLプログラミング入門へようこそ！
 =================================
 
+:ライセンス:
+   Copyright (C)  2013 Digia Plc and/or its subsidiary(-ies).
+   Permission is granted to copy, distribute and/or modify this document
+   under the terms of the GNU Free Documentation License, Version 1.3
+   or any later version published by the Free Software Foundation;
+   with no Invariant Sections, no Front-Cover Texts, and no Back-Cover Texts.
+   A copy of the license is included in the section entitled "GNU
+   Free Documentation License".
+
+:訳: `kumar8600`_
+:原文: `Getting Started Programming with Qt Quick | QtDoc 5.2 | Documentation | Qt Project`__
+
+.. _`kumar8600`: https://twitter.com/kumar8600
+__ http://qt-project.org/doc/qt-5/gettingstartedqml.html
+
+
 コンテンツ:
 
 .. toctree::
