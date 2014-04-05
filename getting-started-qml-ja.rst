@@ -15,7 +15,6 @@
 
 :訳: `kumar8600`_
 :原文: `Getting Started Programming with Qt Quick | QtDoc 5.2 | Documentation | Qt Project`__
-:バージョン: WIP
 
 .. _`kumar8600`: https://twitter.com/kumar8600
 __ http://qt-project.org/doc/qt-5/gettingstartedqml.html
