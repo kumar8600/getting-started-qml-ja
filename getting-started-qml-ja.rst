@@ -1,4 +1,5 @@
 .. -*- coding: utf-8 -*-
+
 ===========================================
  Qt Quickプログラミング入門
 ===========================================
@@ -34,13 +35,17 @@ __ http://qt-project.org/doc/qt-5/gettingstartedqml.html
 .. _`QMLオブジェクト型`: http://qt-project.org/doc/qt-5/qtqml-typesystem-objecttypes.html
 
 .. figure:: http://qt-project.org/doc/qt-5/images/qml-texteditor5_editmenu.png
-
+   
    完全なソースコードは ``examples/quick/tutorials/gettingStartedQml`` ディレクトリにあります。最終的なアプリケーションがどんな感じか見たければ、 `テキストエディタの実行`_ までスキップしてください。
 
 このチュートリアルのC++の部分は、読者がQtのコンパイル手順の基本的な知識を有していることを前提としています。
 
 :チュートリアルの章:
-   TODO
+   1. `ボタンとメニューの定義`_
+   2. `メニューバーの実装`_
+   3. `テキストエディタの構築`_
+   4. `テキストエディタの装飾`_
+   5. `Qt C++を用いたQMLの拡張`_
 
 文法や機能といった、QMLについての情報は、 `The QML Reference`__ に含まれています。
 
@@ -61,7 +66,7 @@ QMLでは、基本の視覚要素は `Rectangle`_ 型です。 `QMLオブジェ�
 .. _`Rectangle`: http://qt-project.org/doc/qt-5/qml-qtquick-rectangle.html
 .. _`QMLプロパティ`: http://qt-project.org/doc/qt-5/qtqml-syntax-propertybinding.html
 
-::
+.. code:: qml
 
    import QtQuick 2.0
 
@@ -101,7 +106,7 @@ QMLでは、基本の視覚要素は `Rectangle`_ 型です。 `QMLオブジェ�
 
 .. _`Qtのシグナル・アンド・スロット`: http://qt-project.org/doc/qt-5/signalsandslots.html
 
-::
+.. code:: qml
 
    Rectangle {
        id: simpleButton
@@ -131,7 +136,7 @@ QMLは、別の要素へアンカー出来る要素によるレイアウト、�
 
 ``SimpleButton.qml`` のコードは画面にボタンを表示して、それがマウスがクリックされた時にテキストを出力するのに十分です。
 
-::
+.. code:: qml
 
     Rectangle {
        id: button
@@ -195,7 +200,9 @@ QMLは、別の要素へアンカー出来る要素によるレイアウト、�
 
 メニューはリストの内容を表示し、各要素はアクションを実行する能力を持っています。QMLでは、様々な方法でメニューを作れます。まず、それぞれが異なるアクションをいずれ起こすボタンを含んでいるメニューを作ります。メニューのコードは ``FileMenu.qml`` にあります。
 
-FileMenu.qmlより::
+FileMenu.qmlより:
+
+.. code:: qml
 
    Row {
         anchors.centerIn: parent
@@ -256,7 +263,7 @@ QMLは `データモデル`_ を表示する、異なる `データビュー`_ �
 .. _`ListModel`: http://qt-project.org/doc/qt-5/qml-qtqml-models-listmodel.html
 .. _`ListView`: http://qt-project.org/doc/qt-5/qml-qtquick-listview.html
 
-::
+.. code:: qml
 
     ObjectModel {
         id: menuListModel
@@ -276,7 +283,7 @@ QMLは `データモデル`_ を表示する、異なる `データビュー`_ �
 
 `ListView`_ 型はデリゲートによりモデルを表示します。そのデリゲートはモデル項目を ``Row`` オブジェクトかグリッドの中に表示することが出来ます。私達の ``menuListModel`` には既に可視項目があるため、私達はデリゲートを宣言する必要がありません。
 
-::
+.. code:: qml
 
     ListView {
         id: menuListView
@@ -308,7 +315,7 @@ QMLは `データモデル`_ を表示する、異なる `データビュー`_ �
 
 矩形 ``labelList`` は値が、それがメニューバーの前に表示されると示す ``1`` である ``z`` を持っています。より ``z`` 値が高い項目は、 ``z`` 値がより低い項目よりも前に表示されます。デフォルトの ``z`` の値は ``0`` です。
 
-::
+.. code:: qml
 
     Rectangle {
         id: labelList
@@ -351,7 +358,7 @@ TextAreaの宣言
 
 .. _`TextEdit`: http://qt-project.org/doc/qt-5/qml-qtquick-textedit.html
 
-::
+.. code:: qml
 
     TextEdit {
         id: textEditor
@@ -368,7 +375,7 @@ TextAreaの宣言
 
 エディタは、フォント ``color`` プロパティを設定され、そして ``wrapMode`` をテキストを折り返すように設定されています。 ``TextEdit`` 領域は、テキストカーソルが可視領域の外にあるならスクロールするフリック可能要素の内側にあります。関数 ``ensureVisible()`` は、カーソル矩形が可視境界の外側に出たかチェックし、適宜テキストエリアを移動します。QMLはスクリプトにJavascriptの構文を使用しており、前述のとおり、JavascriptファイルをQMLにインポートして使うことが出来ます。
 
-::
+.. code:: javascript
 
     function ensureVisible(r) {
         if (contentX >= r.x)
@@ -387,7 +394,7 @@ TextAreaの宣言
 
 QMLを使って私達のテキストエディタを作る準備が整いました。テキストエディタは２つの部品を持ちます。先ほど作ったメニューバーと、テキストエリアです。QMLは部品を再利用することができるので、部品のインポートと、必要あらばカスタマイズすることで、私達のコードをより単純にします。私達のテキストエディタはウィンドウを２つに分けます。画面の３分の１はメニューバーに捧げられ、３分の２はテキストエリアを表示します。メニューバーは他のどのオブジェクトよりも前に表示されます。
 
-::
+.. code:: qml
 
     Rectangle {
         id: screen
@@ -433,7 +440,7 @@ QMLを使って私達のテキストエディタを作る準備が整いまし�
 
 .. _`Image`: http://qt-project.org/doc/qt-5/qml-qtquick-image.html
 
-::
+.. code:: qml
 
     Rectangle {
         id: drawer
@@ -464,7 +471,7 @@ QMLを使って私達のテキストエディタを作る準備が整いまし�
 .. _`State`: http://qt-project.org/doc/qt-5/qml-qtquick-state.html
 .. _`PropertyChanges`: http://qt-project.org/doc/qt-5/qml-qtquick-propertychanges.html
 
-::
+.. code:: qml
 
     states:[
         State {
@@ -492,7 +499,7 @@ QMLを使って私達のテキストエディタを作る準備が整いまし�
 .. _`Easing.OutExpo`: http://qt-project.org/doc/qt-5/qml-qtquick-propertyanimation.html#easing.type-prop
 .. _`アニメーション`: http://qt-project.org/doc/qt-5/qtquick-statesanimations-animations.html
 
-::
+.. code:: qml
 
     transitions: [
         Transition {
@@ -505,7 +512,11 @@ QMLを使って私達のテキストエディタを作る準備が整いまし�
 
 プロパティの変化をアニメーションさせるもう一つの方法は、 `Behavior`_ 型を宣言することです。遷移は状態変化時にのみ動作し、そして ``Behavior`` は一般的なプロパティ変化のアニメーションを設定できます。テキストエディタでは、矢印が ``NumberAnimation`` を持ち、プロパティ ``rotation`` の変化をアニメーションさせます。
 
-TextEditor.qml より::
+.. _`Behavior`: http://qt-project.org/doc/qt-5/qml-qtquick-behavior.html
+
+TextEditor.qml より:
+
+.. code:: qml
 
     Behavior {
         NumberAnimation { property: "rotation"; easing.type: Easing.OutExpo }
@@ -516,7 +527,9 @@ TextEditor.qml より::
 .. _`ColorAnimation`: http://qt-project.org/doc/qt-5/qml-qtquick-coloranimation.html
 .. _`NumberAnimation`: http://qt-project.org/doc/qt-5/qml-qtquick-numberanimation.html
 
-Button.qml より::
+Button.qml より:
+
+.. code:: qml
 
     ...
 
@@ -531,7 +544,9 @@ Button.qml より::
 .. _`Gradient`: http://qt-project.org/doc/qt-5/qml-qtquick-gradient.html
 .. _`GradientStop`: http://qt-project.org/doc/qt-5/qml-qtquick-gradientstop.html
 
-MenuBar.qml より::
+MenuBar.qml より:
+
+.. code:: qml
 
     gradient: Gradient {
         GradientStop { position: 0.0; color: "#8C8F8C" }
@@ -579,6 +594,8 @@ QtとC++を用いて、読込と保存を実装します。C++クラスと関数
 
 .. note::
    Qt 5.1から、 `Qt Quick Dialogs`_ モジュールが、ローカルファイルシステムからファイルを選択するのに使えるファイルダイアログの部品を提供しています。説明のために、このチュートリアルでは私達自身で記述します。
+   
+   .. _`Qt Quick Dialogs`: http://qt-project.org/doc/qt-5/qtquickdialogs-index.html
 
 
 Qtプラグインのビルド
@@ -586,7 +603,9 @@ Qtプラグインのビルド
 
 プラグインをビルドするには、Qtプロジェクトファイルに次のように設定する必要があります。まず必要なソース、ヘッダー、およびQtモジュールを私達のプロジェクトファイルに追加する必要があります。すべてのC++コードとプロジェクトファイルは ``filedialog`` ディレクトリにあります。
 
-filedialog.pro より::
+filedialog.pro より:
+
+.. code:: qmake
 
     TEMPLATE = lib
     CONFIG += qt plugin
@@ -614,7 +633,9 @@ filedialog.pro より::
 クラスをQMLへ登録
 -----------------
 
-dialogPlugin.h より::
+dialogPlugin.h より:
+
+.. code:: c++
 
     #include <QtQml/QQmlExtensionPlugin>
 
@@ -635,8 +656,11 @@ dialogPlugin.h より::
 .. _`Q_PLUGIN_METADATA`: http://qt-project.org/doc/qt-5/plugins-howto.html
 .. _`Q_OBJECT`: http://qt-project.org/doc/qt-5/qobject.html#Q_OBJECT
 .. _`QQmlExtensionPlugin`: http://qt-project.org/doc/qt-5/qqmlextensionplugin.html
+.. _`registerTypes()`: http://qt-project.org/doc/qt-5/qqmlextensionplugin.html#registerTypes
 
-DialogPlugin.cpp より::
+DialogPlugin.cpp より:
+
+.. code:: c++
 
     #include "dialogPlugin.h"
     #include "directory.h"
@@ -661,7 +685,7 @@ C++と `QtのMeta-Objectシステム`_ を使って、QML型とプロパティ�
 
 テキストエディタのためには、ファイルの読込と保存が出来る必要があります。通常、それらの機能はファイルダイアログに含まれています。幸運なことに、 `QDir`_ 、 `QFile`_ 、および `QTextStream`_ が、ディレクトリーの読み込みや、ストリーム入力・出力の実装に使えます。
 
-::
+.. code:: c++
 
     class Directory : public QObject {
         Q_OBJECT
@@ -679,13 +703,13 @@ C++と `QtのMeta-Objectシステム`_ を使って、QML型とプロパティ�
 
 同様に、私達は他のプロパティも用途に応じて宣言しています。プロパティ ``filesCount`` はディレクトリ内のファイルの数を示し、プロパティ ``filename`` は現在選択中のファイルの名前、プロパティ ``fileContent`` は読み込んだ・書き込んだファイルの中身を持ちます。
 
-::
+.. code:: c++
 
     Q_PROPERTY(QQmlListProperty<File> files READ files CONSTANT)
 
 リストプロパティ ``files`` は、ディレクトリ内のすべてのフィルタされたファイルのリストです。クラス ``Directory`` は無効なテキストファイルを除外するように実装されており、 ``.txt`` 拡張子のファイルだけが有効です。さらに、 `QList`_ はC++で `QQmlListProperty`_ として宣言することで、QMLファイルの中で使えます。そのテンプレート引数として取られるクラスは `QObject`_ から継承したものである必要があり、したがってクラス ``File`` も `QObject`_ から継承しなければなりません。クラス ``Directory`` では、 ``File`` オブジェクトのリストが ``m_fileList`` と名づけた `QList`_ に格納されています。
 
-::
+.. code:: c++
 
     class File : public QObject{
 
@@ -700,7 +724,7 @@ C++と `QtのMeta-Objectシステム`_ を使って、QML型とプロパティ�
 .. note::
    C++コードで識別子 ``id`` を作成する必要はありません。
 
-::
+.. code:: c++
 
     Directory {
         id: directory
@@ -717,7 +741,9 @@ QMLはJavascriptの構文と構造を使っているので、ファイルのリ�
 
 通常のC++関数も、QMLよりアクセス可能です。ファイル読込・書込関数はC++で実装され、 `Q_INVOKABLE`_ マクロを使って宣言されています。私達は代わりに、 ``slot`` とQMLよりアクセス可能な関数、として関数を宣言できます。
 
-directory.h より::
+directory.h より:
+
+.. code:: c++
 
     Q_INVOKABLE void saveFile();
     Q_INVOKABLE void loadFile();
@@ -726,7 +752,9 @@ directory.h より::
 
 リストプロパティは更に検討する必要があります。これはリストプロパティがコールバックをリストの内容にアクセスおよび変更するために使うからです。このリストプロパティは ``QQmlListProperty<File>`` 型です。そのリストがアクセスされるたび、そのアクセサ関数は ``QQmlListProperty<File>`` を返す必要があります。テンプレート型 ``File`` は ``QObject`` の派生である必要があります。更に、 ``QQmlListProperty`` を作るには、リストのアクセサとモディファイアがコンストラクタに関数ポインターとして渡されている必要があります。そのリスト、私達の場合は ``QList`` も、 ``File`` へのポインターのリストである必要があります。
 
-`QQmlListProperty`_ のコンストラクタは、次のように宣言されています::
+`QQmlListProperty`_ のコンストラクタは、次のように宣言されています:
+
+.. code:: c++
 
     QQmlListProperty (QObject *object, void *data, AppendFunction append,
                       CountFunction count = 0, AtFunction at = 0, ClearFunction clear = 0);
@@ -736,11 +764,15 @@ directory.h より::
 .. note::
    関数ポインターはそれぞれ `AppendFunction`_ 、 `CountFunction`_ 、 `AtFunction`_ 、 `ClearFunction`_ の定義と一致していなければなりません。
 
-クラス ``Directory`` は `QQmlListProperty`_ インスタンスをこのように作ります::
+クラス ``Directory`` は `QQmlListProperty`_ インスタンスをこのように作ります:
+
+.. code:: c++
 
     QQmlListProperty<File>(this, &m_fileList, &appendFiles, &filesSize, &fileAt, &clearFilesPtr);
 
-引数のポインターは次の関数を指しています::
+引数のポインターは次の関数を指しています:
+
+.. code:: c++
 
     void appendFiles(QQmlListProperty<File> *property, File *file);
     File* fileAt(QQmlListProperty<File> *property, int index);
@@ -770,18 +802,22 @@ directory.h より::
 
 
 QMLでのプラグインのインポート
----------------------------
+-----------------------------
 
 ツール ``qmlscene`` は同じディレクトリにあるファイルをアプリケーションとしてインポートします。インポートしたい内容の位置を含むファイル ``qmldir`` を作ります。今回の場合、プラグインだけあるのですが、他のリソース（QML型、JavaScriptファイル）も ``qmldir`` で同様にうまく定義されることが出来ます。
 
-ファイル qmldir の内容::
+ファイル qmldir の内容:
+
+.. code:: c++
 
     module FileDialog
     plugin filedialogplugin
 
 先ほど作成したモジュールは ``FileDialog`` と呼ばれ、プロジェクトファイルの ``TARGET`` フィールドと同じ ``filedialogplugin`` と呼ばれるプラグインを利用可能にします。プラグインへのパスを定義しなかったので、QMLエンジンはファイル ``qmldir`` と同じディレクトリからそれを見つけると期待します。
 
-私達により登録されたQML型を、QMLからインポートすることが出来るようになりました::
+私達により登録されたQML型を、QMLからインポートすることが出来るようになりました:
+
+.. code:: c++
 
     import FileDialog 1.0
 
@@ -798,7 +834,9 @@ QMLでのプラグインのインポート
 
 ``Directory`` オブジェクトはファイル ``FileMenu.qml`` で使われ、 ``FileDialog`` オブジェクトにディレクトリの内容が更新されたことを通知します。この通知はシグナルハンドラーである ``onDirectoryChanged`` で行われます。
 
-FileMenu.qml より::
+FileMenu.qml より:
+
+.. code:: c++
 
     Directory {
         id: directory
@@ -808,14 +846,18 @@ FileMenu.qml より::
 
 私達のアプリケーションの簡単さを保つため、ファイルダイアログは常に可視で、 ``.txt`` 拡張子をファイル名に持たない無効なテキストファイルは表示しません。
 
-FileDialog.qml より::
+FileDialog.qml より:
+
+.. code:: c++
 
     signal notifyRefresh()
     onNotifyRefresh: dirView.model = directory.files
 
 ``FileDialog`` オブジェクトは、そのリストプロパティ ``files`` を読むことでディレクトリの内容を表示します。 ``files`` は、デリゲートによりデータの項目をグリッドに表示する `GridView`_ オブジェクトのモデルとして使われます。デリゲートはモデルの外観をハンドルし、私達のファイルダイアログは単純に中央に置かれたテキストのグリッドです。ファイル名をクリックするとその結果、矩形の外観がファイル名がハイライトされたものになります。 ``FileDialog`` はシグナル ``notifyRefresh`` が発行されるたびに通知され、ディレクトリ内のファイルたちを再読み込みします。
 
-FileMenu.qml より::
+FileMenu.qml より:
+
+.. code:: c++
 
     Button {
         id: newButton
@@ -856,7 +898,7 @@ FileMenu.qml より::
 
 .. image:: http://qt-project.org/doc/qt-5/images/qml-texteditor5_filemenu.png
 
-.. `GridView`_: http://qt-project.org/doc/qt-5/qml-qtquick-gridview.html
+.. _`GridView`: http://qt-project.org/doc/qt-5/qml-qtquick-gridview.html
 
 
 最終的なテキストエディタアプリケーション
@@ -872,7 +914,9 @@ FileMenu.qml より::
 
 テキストエディタを実行する前に、ファイルダイアログのC++プラグインをビルドする必要があります。それをビルドしたら、ディレクトリ ``filedialog`` に入って、 ``qmake`` を実行し、 ``make`` または ``nmake`` をプラットフォームに合わせて用いてコンパイルしてください。
 
-テキストエディタを `qmlscene`_ を、インポートディレクトリを引数として渡してQMLエンジンに私達のファイルダイアログプラグインのモジュールをどこから探せばいいか分からせて、実行します。::
+テキストエディタを `qmlscene`_ を、インポートディレクトリを引数として渡してQMLエンジンに私達のファイルダイアログプラグインのモジュールをどこから探せばいいか分からせて、実行します。:
+
+.. code:: bash
 
     qmlscene -I ./imports texteditor.qml
 
