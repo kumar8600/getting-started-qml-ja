@@ -1,3 +1,5 @@
+.. -*- coding: utf-8 -*-
+
 .. Getting started QML programming Japanese translation documentation master file, created by
    sphinx-quickstart on Sat Apr  5 21:52:47 2014.
    You can adapt this file completely to your liking, but it should at least
@@ -22,9 +24,21 @@ QMLプログラミング入門へようこそ！
 __ http://qt-project.org/doc/qt-5/gettingstartedqml.html
 
 
+宣言型UI言語、 **QML** の世界へようこそ。
+この入門ガイドでは、簡単なテキストエディタをQMLを用いて作ります。
+このガイドを読めば、あなたはQMLとQt C++を用いた自分のアプリケーションを開発できるようになるはずです。
+
+
 コンテンツ:
 
 .. toctree::
-   :maxdepth: 2
-
-   getting-started-qml-ja
+   :maxdepth: 1
+   
+   chapter01
+   chapter02
+   chapter03
+   chapter04
+   chapter05
+   chapter06
+   chapter07
+   chapter08
