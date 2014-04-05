@@ -125,8 +125,8 @@ QMLは、別の要素へアンカー出来る要素によるレイアウト、�
 
 .. _`MouseArea`: http://qt-project.org/doc/qt-5/qml-qtquick-mousearea.html
 
-``MouseArea`` はたくさんのシグナル・ハンドラーを持っており、それらは定義した ``MouseArea`` 境界の内側でマウスが動く間ずっと呼ばれます。その一つが ``onClicked`` で、それは好ましいマウスボタン（デフォルトでは左クリック）がクリックされた時必ず呼ばれます。そして、アクションをonClickedハンドラーに束縛できます。
-私達の例では、マウスエリアがクリックされた時必ず、 ``console.log()`` がテキストを出力します。
+``MouseArea`` はたくさんのシグナル・ハンドラーを持っており、それらは定義した ``MouseArea`` 境界の内側でマウスが動く間ずっと呼ばれます。その一つが ``onClicked`` で、それは好ましいマウスボタン（デフォルトでは左クリック）がクリックされるたびに呼ばれます。そして、アクションをonClickedハンドラーに束縛できます。
+私達の例では、マウスエリアがクリックされるたびに、 ``console.log()`` がテキストを出力します。
 ``console.log()`` はデバッグ目的でテキストを出力するのに便利です。
 
 ``SimpleButton.qml`` のコードは画面にボタンを表示して、それがマウスがクリックされた時にテキストを出力するのに十分です。
@@ -429,7 +429,7 @@ QMLを使って私達のテキストエディタを作る準備が整いまし�
 
 私達のテキストエディタはシンプルに見えますし、それを装飾する必要があります。QMLを使って、私達のテキストエディタの遷移を宣言したり、アニメーションさせたり出来ます。私達のメニューバーは画面の３分の１を占領しているので、欲しい時だけ姿を見せてくれると良いでしょう。
 
-メニューバーがクリックされたとき伸び縮みする、引き出しインターフェースを追加できます。私達の実装では、マウスクリックに反応する細い矩形を持ちます。 ``drawer`` は、引き出しと同じように、２つの状態を持ちます。状態「引き出しは開いている」と、状態「引き出しは閉じている」です。項目 ``drawer`` は、高さが小さく細長い矩形です。入れ子になった、矢印アイコンを表す `Image`_ オブジェクトが、引き出しの内側の中央に配置されるよう宣言されています。引き出しは、ユーザーにマウスエリアをクリックされた時必ず、識別子 ``screen`` でアプリケーションの全体へ、状態を代入します。
+メニューバーがクリックされたとき伸び縮みする、引き出しインターフェースを追加できます。私達の実装では、マウスクリックに反応する細い矩形を持ちます。 ``drawer`` は、引き出しと同じように、２つの状態を持ちます。状態「引き出しは開いている」と、状態「引き出しは閉じている」です。項目 ``drawer`` は、高さが小さく細長い矩形です。入れ子になった、矢印アイコンを表す `Image`_ オブジェクトが、引き出しの内側の中央に配置されるよう宣言されています。引き出しは、ユーザーにマウスエリアをクリックされるたびに、識別子 ``screen`` でアプリケーションの全体へ、状態を代入します。
 
 .. _`Image`: http://qt-project.org/doc/qt-5/qml-qtquick-image.html
 
@@ -483,7 +483,7 @@ QMLを使って私達のテキストエディタを作る準備が整いまし�
         }
     ]
 
-状態変化は不意に起こりながらも、スムーズな遷移を必要とします。状態間の遷移は、項目のプロパティ ``transitions`` に、 `Transition`_ 型オブジェクトを束縛して定義されます。私達のテキストエディタは ``DRAWER_OPEN`` か ``DRAWER_CLOSED`` のどちらかの状態へ変化する時、必ずよばれる状態遷移を持ちます。重大なことに、遷移は状態 ``from`` と ``to`` が必要ですが、私達の遷移には、ワイルドカードシンボル ``*`` が、すべての状態変化に遷移を適用すると示すために使えます。
+状態変化は不意に起こりながらも、スムーズな遷移を必要とします。状態間の遷移は、項目のプロパティ ``transitions`` に、 `Transition`_ 型オブジェクトを束縛して定義されます。私達のテキストエディタは ``DRAWER_OPEN`` か ``DRAWER_CLOSED`` のどちらかの状態へ変化するたびに呼ばれる状態遷移を持ちます。重大なことに、遷移は状態 ``from`` と ``to`` が必要ですが、私達の遷移には、ワイルドカードシンボル ``*`` が、すべての状態変化に遷移を適用すると示すために使えます。
 
 ``transitions`` に、プロパティ変化のアニメーションを割り当てられます。私達の ``menuBar`` は位置を ``y: 0`` から ``y: -partition`` へと移し、 `NumberAnimation`_ 型を使って、遷移をアニメーションさせられます。 ``target`` のプロパティを宣言して、一定時間、一定の緩和曲線でアニメーションさせます。緩和曲線はアニメーション速度と補完動作を、状態遷移の間、制御します。私達が選んだ `Easing.OutExpo`_ は、アニメーションの終わりの近くで、ゆっくりになる緩和曲線です。より詳しい情報は、QMLの記事、 `アニメーション`_ を見てください。
 
@@ -659,7 +659,7 @@ C++クラスにQMLプロパティを作成
 
 C++と `QtのMeta-Objectシステム`_ を使って、QML型とプロパティを作ることが出来ます。プロパティを実装するために、Qtにそれらのプロパティを認識させる、スロット・アンド・シグナルを使います。それらのプロパティはQMLで使うことが出来るようになります。
 
-テキストエディタのためには、ファイルの読込と保存が出来る必要があります。通常、それらの機能はファイルダイアログに含まれています。幸運なことに、 `QDir`_ 、 `QFile`_ 、および `QTextStream`_ が、ディレクトリーの読み込みや、ストリーム入力・出力に使えます。
+テキストエディタのためには、ファイルの読込と保存が出来る必要があります。通常、それらの機能はファイルダイアログに含まれています。幸運なことに、 `QDir`_ 、 `QFile`_ 、および `QTextStream`_ が、ディレクトリーの読み込みや、ストリーム入力・出力の実装に使えます。
 
 ::
 
@@ -672,4 +672,208 @@ C++と `QtのMeta-Objectシステム`_ を使って、QML型とプロパティ�
         Q_PROPERTY (QQmlListProperty<File> files READ files CONSTANT)
         ...
 
-クラス ``Directory`` は `QtのMeta-Objectシステム`_ を、ファイルハンドリングを必要とするプロパティを登録するために使っている。
+クラス ``Directory`` は、 QtのMeta-Objectシステム をファイルハンドリングを必要とするプロパティを登録するために使っています。クラス ``Directory`` はプラグインとしてエクスポートされ、QMLで ``Directory``
+型として使用可能です。マクロ ``Q_PROPERTY`` を使ってリストした各プロパティは、QMLプロパティです。
+
+`Q_PROPERTY`_ は QtのMeta-Objectシステム へ渡す読込・書込関数を宣言することで、プロパティを宣言します。例えば、プロパティ ``filename`` は、型は `QString`_ で、読込は関数 ``filename()`` を使用可能で、書込は関数 ``setFilename()`` を使用可能です。加えて、プロパティ ``filename`` と関連付けられたシグナル、 ``filenameChanged()`` が在り、そのプロパティが変更されるたびに発行されます。読込・書込関数は ``public`` としてヘッダーファイルで宣言されています。
+
+同様に、私達は他のプロパティも用途に応じて宣言しています。プロパティ ``filesCount`` はディレクトリ内のファイルの数を示し、プロパティ ``filename`` は現在選択中のファイルの名前、プロパティ ``fileContent`` は読み込んだ・書き込んだファイルの中身を持ちます。
+
+::
+
+    Q_PROPERTY(QQmlListProperty<File> files READ files CONSTANT)
+
+リストプロパティ ``files`` は、ディレクトリ内のすべてのフィルタされたファイルのリストです。クラス ``Directory`` は無効なテキストファイルを除外するように実装されており、 ``.txt`` 拡張子のファイルだけが有効です。さらに、 `QList`_ はC++で `QQmlListProperty`_ として宣言することで、QMLファイルの中で使えます。そのテンプレート引数として取られるクラスは `QObject`_ から継承したものである必要があり、したがってクラス ``File`` も `QObject`_ から継承しなければなりません。クラス ``Directory`` では、 ``File`` オブジェクトのリストが ``m_fileList`` と名づけた `QList`_ に格納されています。
+
+::
+
+    class File : public QObject{
+
+        Q_OBJECT
+        Q_PROPERTY(QString name READ name WRITE setName NOTIFY nameChanged)
+
+        ...
+    };
+
+これで、QMLから ``Directory`` オブジェクトのプロパティの一部としてそれらのプロパティを使えるようになります。
+
+.. note::
+   C++コードで識別子 ``id`` を作成する必要はありません。
+
+::
+
+    Directory {
+        id: directory
+
+        filesCount
+        filename
+        fileContent
+        files
+
+        files[0].name
+    }
+
+QMLはJavascriptの構文と構造を使っているので、ファイルのリストを反復処理し、そのプロパティを取得することが出来ます。最初のファイルのプロパティ ``name`` を取得するために、 ``files[0].name`` を呼ぶ事が出来ます。
+
+通常のC++関数も、QMLよりアクセス可能です。ファイル読込・書込関数はC++で実装され、 `Q_INVOKABLE`_ マクロを使って宣言されています。私達は代わりに、 ``slot`` とQMLよりアクセス可能な関数、として関数を宣言できます。
+
+directory.h より::
+
+    Q_INVOKABLE void saveFile();
+    Q_INVOKABLE void loadFile();
+
+クラス ``Directory`` も、ディレクトリの内容が変更されるたびに他のオブジェクトに通知しなければなりません。この機能は ``signal`` を用いて行われます。前述のように、QMLシグナルは、対応するその名前の前に ``on`` を付けた名前のハンドラーを持ちます。 ``directoryChanged`` と名付けられたシグナルは、ディレクトリの更新があるたびに呼び出されます。更新は単にディレクトリの内容を再読み込みし、ディレクトリの有効なファイルの一覧を更新します。シグナルハンドラー ``onDirectoryChanged`` へアクションをアタッチすることで、QML項目は更新を通知されます。
+
+リストプロパティは更に検討する必要があります。これはリストプロパティがコールバックをリストの内容にアクセスおよび変更するために使うからです。このリストプロパティは ``QQmlListProperty<File>`` 型です。そのリストがアクセスされるたび、そのアクセサ関数は ``QQmlListProperty<File>`` を返す必要があります。テンプレート型 ``File`` は ``QObject`` の派生である必要があります。更に、 ``QQmlListProperty`` を作るには、リストのアクセサとモディファイアがコンストラクタに関数ポインターとして渡されている必要があります。そのリスト、私達の場合は ``QList`` も、 ``File`` へのポインターのリストである必要があります。
+
+`QQmlListProperty`_ のコンストラクタは、次のように宣言されています::
+
+    QQmlListProperty (QObject *object, void *data, AppendFunction append,
+                      CountFunction count = 0, AtFunction at = 0, ClearFunction clear = 0);
+
+リストへ追加、リストをカウント、添字によって要素を取得、およびリストを空にする関数へのポインターをとっています。関数 ``append`` だけが必須です。
+
+.. note::
+   関数ポインターはそれぞれ `AppendFunction`_ 、 `CountFunction`_ 、 `AtFunction`_ 、 `ClearFunction`_ の定義と一致していなければなりません。
+
+クラス ``Directory`` は `QQmlListProperty`_ インスタンスをこのように作ります::
+
+    QQmlListProperty<File>(this, &m_fileList, &appendFiles, &filesSize, &fileAt, &clearFilesPtr);
+
+引数のポインターは次の関数を指しています::
+
+    void appendFiles(QQmlListProperty<File> *property, File *file);
+    File* fileAt(QQmlListProperty<File> *property, int index);
+    int filesSize(QQmlListProperty<File> *property);
+    void clearFilesPtr(QQmlListProperty<File> *property);
+
+私達のファイルダイアログを簡単にするため、クラス ``Directory`` は ``.txt`` 拡張子を持たない無効なテキストファイルを除外します。もしファイル名が ``.txt`` 拡張子を持たないのであれば、私達のファイルダイアログにそれは映りません。また、その実装では保存したファイルが ``.txt`` 拡張子をファイル名に持つか確かめます。 ``Directory`` は ``QTextStream`` をファイルの読込およびファイルの内容のファイルへの出力のために使います。
+
+私達の ``Directory`` オブジェクトで、ファイルたちをリストとして取得でき、いくつのテキストファイルがアプリケーションディレクトリにあるか知ることができ、ファイルの名前と内容を文字列として取得でき、ディレクトリの内容に変更が有るたびに通知されることができます。
+
+プラグインをビルドするには、 ``qmake`` を ``filedialog.pro`` で実行し、そして ``make`` を実行してビルドと ``plugins`` ディレクトリへのプラグインの転送を行います。
+
+.. _`QtのMeta-Objectシステム`: http://qt-project.org/doc/qt-5/metaobjects.html
+.. _`QDir`: http://qt-project.org/doc/qt-5/qdir.html
+.. _`QFile`: http://qt-project.org/doc/qt-5/qfile.html
+.. _`QTextStream`: http://qt-project.org/doc/qt-5/qtextstream.html
+.. _`Q_PROPERTY`: http://qt-project.org/doc/qt-5/qobject.html#Q_PROPERTY
+.. _`QString`: http://qt-project.org/doc/qt-5/qstring.html
+.. _`QList`: http://qt-project.org/doc/qt-5/qlist.html
+.. _`QQmlListProperty`: http://qt-project.org/doc/qt-5/qqmllistproperty.html
+.. _`QObject`: http://qt-project.org/doc/qt-5/qobject.html
+.. _`Q_INVOKABLE`: http://qt-project.org/doc/qt-5/qobject.html#Q_INVOKABLE
+.. _`AppendFunction`: http://qt-project.org/doc/qt-5/qqmllistproperty.html#AppendFunction-typedef
+.. _`CountFunction`: http://qt-project.org/doc/qt-5/qqmllistproperty.html#CountFunction-typedef
+.. _`AtFunction`: http://qt-project.org/doc/qt-5/qqmllistproperty.html#AtFunction-typedef
+.. _`ClearFunction`: http://qt-project.org/doc/qt-5/qqmllistproperty.html#ClearFunction-typedef
+
+
+QMLでのプラグインのインポート
+---------------------------
+
+ツール ``qmlscene`` は同じディレクトリにあるファイルをアプリケーションとしてインポートします。インポートしたい内容の位置を含むファイル ``qmldir`` を作ります。今回の場合、プラグインだけあるのですが、他のリソース（QML型、JavaScriptファイル）も ``qmldir`` で同様にうまく定義されることが出来ます。
+
+ファイル qmldir の内容::
+
+    module FileDialog
+    plugin filedialogplugin
+
+先ほど作成したモジュールは ``FileDialog`` と呼ばれ、プロジェクトファイルの ``TARGET`` フィールドと同じ ``filedialogplugin`` と呼ばれるプラグインを利用可能にします。プラグインへのパスを定義しなかったので、QMLエンジンはファイル ``qmldir`` と同じディレクトリからそれを見つけると期待します。
+
+私達により登録されたQML型を、QMLからインポートすることが出来るようになりました::
+
+    import FileDialog 1.0
+
+    Directory {
+        id: directory
+    }
+    ...
+
+
+ファイルダイアログのファイルメニューへの統合
+--------------------------------------------
+
+私達の ``FileMenu`` は、ディレクトリ内のテキストファイルのリストを含む ``FileDialog`` オブジェクトを表示して、ユーザーがリストをクリックすることでファイルを選べるようにする必要があります。また、読込、書込、新規作成ボタンに、それぞれに期待される動作を割り当てる必要があります。 ``FileMenu`` は編集可能なユーザーがキーボードでファイル名をタイプ出来るように、テキスト入力を含みます。
+
+``Directory`` オブジェクトはファイル ``FileMenu.qml`` で使われ、 ``FileDialog`` オブジェクトにディレクトリの内容が更新されたことを通知します。この通知はシグナルハンドラーである ``onDirectoryChanged`` で行われます。
+
+FileMenu.qml より::
+
+    Directory {
+        id: directory
+        filename: textInput.text
+        onDirectoryChanged: fileDialog.notifyRefresh()
+    }
+
+私達のアプリケーションの簡単さを保つため、ファイルダイアログは常に可視で、 ``.txt`` 拡張子をファイル名に持たない無効なテキストファイルは表示しません。
+
+FileDialog.qml より::
+
+    signal notifyRefresh()
+    onNotifyRefresh: dirView.model = directory.files
+
+``FileDialog`` オブジェクトは、そのリストプロパティ ``files`` を読むことでディレクトリの内容を表示します。 ``files`` は、デリゲートによりデータの項目をグリッドに表示する `GridView`_ オブジェクトのモデルとして使われます。デリゲートはモデルの外観をハンドルし、私達のファイルダイアログは単純に中央に置かれたテキストのグリッドです。ファイル名をクリックするとその結果、矩形の外観がファイル名がハイライトされたものになります。 ``FileDialog`` はシグナル ``notifyRefresh`` が発行されるたびに通知され、ディレクトリ内のファイルたちを再読み込みします。
+
+FileMenu.qml より::
+
+    Button {
+        id: newButton
+        label: "New"
+        onButtonClick: {
+            textArea.textContent = ""
+        }
+    }
+    Button {
+        id: loadButton
+        label: "Load"
+        onButtonClick: {
+            directory.filename = textInput.text
+            directory.loadFile()
+            textArea.textContent = directory.fileContent
+        }
+    }
+    Button {
+        id: saveButton
+        label: "Save"
+        onButtonClick: {
+            directory.fileContent = textArea.textContent
+            directory.filename = textInput.text
+            directory.saveFile()
+        }
+    }
+    Button {
+        id: exitButton
+        label: "Exit"
+        onButtonClick: {
+            Qt.quit()
+        }
+    }
+
+``FileMenu`` は今やそれぞれの期待される動作と接続されています。 ``saveButton`` はテキストを ``TextEdit`` から ``directory`` のプロパティ ``fileContent`` へと渡し、続いて編集可能なテキスト入力からそれのファイル名をコピーします。最後に、そのボタンは関数 ``saveFile()`` を呼び、ファイルを保存します。 ``loadButoon`` は同様の実行を持ちます。また、 ``New`` の動作は ``TextEdit`` の内容を空にします。
+
+さらに、 ``EditMenu`` のボタンはコピー、貼り付け、全選択といった ``TextEdit`` の関数とそれぞれ接続されています。
+
+.. image:: http://qt-project.org/doc/qt-5/images/qml-texteditor5_filemenu.png
+
+.. `GridView`_: http://qt-project.org/doc/qt-5/qml-qtquick-gridview.html
+
+
+最終的なテキストエディタアプリケーション
+========================================
+
+.. image:: http://qt-project.org/doc/qt-5/images/qml-texteditor5_newfile.png
+
+アプリケーションは簡単なテキストエディタとして機能でき、テキストを受け、ファイルへ保存することが出来ます。また、ファイルを読み込み、テキスト操作を行うこともできます。
+
+
+テキストエディタの実行
+======================
+
+テキストエディタを実行する前に、ファイルダイアログのC++プラグインをビルドする必要があります。それをビルドしたら、ディレクトリ ``filedialog`` に入って、 ``qmake`` を実行し、 ``make`` または ``nmake`` をプラットフォームに合わせて用いてコンパイルしてください。
+
+テキストエディタを `qmlscene`_ を、インポートディレクトリを引数として渡してQMLエンジンに私達のファイルダイアログプラグインのモジュールをどこから探せばいいか分からせて、実行します。::
+
+    qmlscene -I ./imports texteditor.qml
+
+完全なソースコードはディレクトリ ``examples/quick/tutorials/gettingStartedQml`` にあります。
