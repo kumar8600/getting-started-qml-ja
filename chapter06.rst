@@ -331,7 +331,7 @@ FileMenu.qml より:
 
 さらに、 ``EditMenu`` のボタンはコピー、貼り付け、全選択といった ``TextEdit`` の関数とそれぞれ接続されています。
 
-.. image:: http://qt-project.org/doc/qt-5/images/qml-texteditor5_filemenu.png
+.. image:: ./images/qml-texteditor5_filemenu.png
 
 .. _`GridView`: http://qt-project.org/doc/qt-5/qml-qtquick-gridview.html
 

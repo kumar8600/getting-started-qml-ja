@@ -136,5 +136,5 @@ MenuBar.qml より:
 
 私達はとても単純なテキストエディタのユーザーインターフェイスを組み立てました。今後は、ユーザーインターフェイスが完成している中で、普通のQtとC++を用いてアプリケーションロジックを実装することができます。QMLはプロトタイピングツールとして良く動き、アプリケーションロジックとUIデザインを引き離し分離させるのです。
 
-.. image:: http://qt-project.org/doc/qt-5/images/qml-texteditor4_texteditor.png
+.. image:: ./images/qml-texteditor4_texteditor.png
 

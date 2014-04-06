@@ -100,4 +100,4 @@ QMLは `データモデル`_ を表示する、異なる `データビュー`_ �
 
 私達が今作ったメニューバーは、フリックするか、または上部にあるメニュー名をクリックするかで、メニューにアクセスすることが出来ます。直感的で、応答性がある感じのメニュー画面切り替えが出来ました。
 
-.. image:: http://qt-project.org/doc/qt-5/images/qml-texteditor2_menubar.png
+.. image:: ./images/qml-texteditor2_menubar.png

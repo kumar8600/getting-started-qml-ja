@@ -3,6 +3,6 @@
 最終的なテキストエディタアプリケーション
 ========================================
 
-.. image:: http://qt-project.org/doc/qt-5/images/qml-texteditor5_newfile.png
+.. image:: ./images/qml-texteditor5_newfile.png
 
 アプリケーションは簡単なテキストエディタとして機能でき、テキストを受け、ファイルへ保存することが出来ます。また、ファイルを読み込み、テキスト操作を行うこともできます。

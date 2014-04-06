@@ -78,5 +78,5 @@ QMLを使って私達のテキストエディタを作る準備が整いまし�
 
 再利用可能な部品をインポートすることで、私達の ``TextEditor`` コードは大変単純になったようです。そういうわけで、プロパティに定義された振る舞いについて気にすることなく、アプリケーションの主要部を作ることができます。このアプローチを使って、アプリケーションのレイアウトやUI部品は簡単に作られます。
 
-.. image:: http://qt-project.org/doc/qt-5/images/qml-texteditor3_texteditor.png
+.. image:: ./images/qml-texteditor3_texteditor.png
 

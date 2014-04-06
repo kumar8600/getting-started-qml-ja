@@ -49,7 +49,7 @@ QMLでは、基本の視覚要素は `Rectangle`_ 型です。 `QMLオブジェ�
 
 このコードを ``SimpleButton.qml`` として保存しましょう。 ``qmlscene`` をこのファイルを引数として渡して実行すると、灰色の矩形とテキストラベルが表示されるでしょう。
 
-.. image:: http://qt-project.org/doc/qt-5/images/qml-texteditor1_simplebutton.png
+.. image:: ./images/qml-texteditor1_simplebutton.png
 
 ボタンクリック機能を実装するには、QMLのイベント・ハンドリングが使えます。QMLのイベント・ハンドリングは `Qtのシグナル・アンド・スロット`_ 機構ととても似ています。シグナルが発行されると、つながっているスロットが呼ばれます。
 
@@ -117,12 +117,10 @@ QMLは、別の要素へアンカー出来る要素によるレイアウト、�
 カスタムプロパティは、 ``property type name`` 文で宣言されます。コードでは、 ``color`` 型の ``buttonColor`` プロパティが宣言され、値 ``"lightblue"`` が束縛されています。 ``buttonColor`` はあとで、ボタンを塗りつぶす色を決定する条件つき命令で使われます。
 
 .. note::
-   プロパティ値は ``:`` コロン文字を使って束縛できるほか、 ``=`` イコール記号を使って代入することも出来ます。
+   プロパティ値は ``:`` コロン文字を使って束縛できるほか、 ``=`` イコール記号を使って代入することも出来ます [*]_ 。
 
 カスタムプロパティのおかげで、 ``Rectangle`` のスコープ外から内部の値にアクセス出来ます。
 ``int``, ``string``, ``real``, ``variant`` と呼ばれる型も含む、そういった基本的な `QML型`_ が存在します。
-
-.. _`QML型`: http://qt-project.org/doc/qt-5/qtqml-typesystem-basictypes.html
 
 シグナル・ハンドラー ``onEntered`` と ``onExited`` に色を束縛することで、ボタンの上をマウスホバーした時はボタンの枠線を黄色に変え、そのマウスエリアから出て行ったときは元の色に戻します。
 
@@ -139,7 +137,13 @@ QMLは、別の要素へアンカー出来る要素によるレイアウト、�
 このボタンは、アクションを実行するための構成として使われなければ使い物になりません。
 次の節では、こうしたボタンをいくつか持つメニューを作ります。
 
-.. image:: http://qt-project.org/doc/qt-5/images/qml-texteditor1_button.png
+.. image:: ./images/qml-texteditor1_button.png
+
+.. [*] 訳注: 代入では、それが行われた際の値が割り当てられるのみですが、それに対して束縛では、束縛された変数の値に変更に追従します。この追従は他の変数が束縛されるか、新たな値が代入されるまで続きます。 :
+       `QtQml 5.0: Property Binding | Documentation | Qt Project`_
+
+.. _`QML型`: http://qt-project.org/doc/qt-5/qtqml-typesystem-basictypes.html
+.. _`QtQml 5.0: Property Binding | Documentation | Qt Project`: http://qt-project.org/doc/qt-5.0/qtqml/qtqml-syntax-propertybinding.html
 
 
 メニューページの作成
@@ -181,14 +185,13 @@ FileMenu.qmlより:
 .. note::
    ``exitButton`` のハンドラー ``onButtonClick`` に加え、 ``Button.qml`` にあるシグナル・ハンドラー ``onButtonClick`` も呼び出されます。
 
-.. image:: http://qt-project.org/doc/qt-5/images/qml-texteditor1_filemenu.png
+.. image:: ./images/qml-texteditor1_filemenu.png
 
 ``Row`` は ``Rectangle`` の中で定義され、ボタンの列のための矩形のコンテナーを作っている。この付加的な矩形はメニューの内側にボタンの列を作る間接的な方法を作っています。
 
 編集メニューの宣言はこの段階ではよく似ています。そのメニューは ``Copy`` 、 ``Paste`` 、 ``Select All`` ラベルをそれぞれ持つボタンを持ちます。
 
-.. image:: http://qt-project.org/doc/qt-5/images/qml-texteditor1_editmenu.png
+.. image:: ./images/qml-texteditor1_editmenu.png
 
 前もって作ったコンポーネントのインポートとカスタマイズについての知識を身に付けたので、これから、メニューバーを、コンポーネントを組み合わせて作りましょう。コンポーネントとは、複数のメニュー・ページのことで、そのメニュー・ページはそれぞれ、メニューの選択肢としての複数のボタンから成ります。まずはそれらを作ります。
 また、QMLでデータを組み立てる方法も見て行きます。
-
