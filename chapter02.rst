@@ -119,6 +119,9 @@ QMLは、別の要素へアンカー出来る要素によるレイアウト、�
 .. note::
    プロパティ値は ``:`` コロン文字を使って束縛できるほか、 ``=`` イコール記号を使って代入することも出来ます [*]_ 。
 
+.. [*] 訳注: 代入では、それが行われた際の値が割り当てられるのみですが、それに対して束縛では、束縛された変数の値の変更に追従します。この追従は他の変数が束縛されるか、新たな値が代入されるまで続きます。 :
+       `QtQml 5.0: Property Binding | Documentation | Qt Project`_
+
 カスタムプロパティのおかげで、 ``Rectangle`` のスコープ外から内部の値にアクセス出来ます。
 ``int``, ``string``, ``real``, ``variant`` と呼ばれる型も含む、そういった基本的な `QML型`_ が存在します。
 
@@ -138,9 +141,6 @@ QMLは、別の要素へアンカー出来る要素によるレイアウト、�
 次の節では、こうしたボタンをいくつか持つメニューを作ります。
 
 .. image:: ./images/qml-texteditor1_button.png
-
-.. [*] 訳注: 代入では、それが行われた際の値が割り当てられるのみですが、それに対して束縛では、束縛された変数の値に変更に追従します。この追従は他の変数が束縛されるか、新たな値が代入されるまで続きます。 :
-       `QtQml 5.0: Property Binding | Documentation | Qt Project`_
 
 .. _`QML型`: http://qt-project.org/doc/qt-5/qtqml-typesystem-basictypes.html
 .. _`QtQml 5.0: Property Binding | Documentation | Qt Project`: http://qt-project.org/doc/qt-5.0/qtqml/qtqml-syntax-propertybinding.html
